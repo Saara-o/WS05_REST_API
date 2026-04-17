@@ -31,10 +31,10 @@ app.locals.publicDir = publicDir;
 app.use(express.json());
 app.use(express.static(publicDir));
 
-// TODO: Complete the page routes in routes/pages.js.
+// Browser Routes
 app.use('/', pagesRouter);
 
-// TODO: Complete the API routes in routes/posts.js.
+// API routes
 app.use('/api/posts', postsRouter);
 
 app.use((req, res) => {
