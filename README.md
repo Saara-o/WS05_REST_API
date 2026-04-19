@@ -1,41 +1,44 @@
 # Workshop 05 - Building a REST API with Express and MongoDB
 
-## Starter Notes
+This project is part of Laurea's Full Stack Development course.  
+The goal of this workshop is to build a fully functional **REST API** to handle blog postings. 
 
-Before starting, prepare your repository workspace:
-- Remove unnecessary content/files from the repository.
-- Copy the full content of this `starter/` folder to the repository root.
-- Continue the exercise from the repository root after the copy.
+## Topics Covered
+- Express.js routing for API endpoints
+- MongoDB & Mongoose schema design
+- CRUD operations (Create, Read, Update, Delete)
+- HTTP status codes and REST conventions
+- Mongoose validation
+- Error handling middleware (404 & 500)
+- Using Postman / curl to test API endpoints
+- Server startup and logging
 
-## Exercise Context
-This exercise expands the previous exercises from this FullStack course. In this exercise, students will create a REST API to handle blog postings.
-The student tasks are embedded directly into these files as TODOs:
-- `server.js`
-- `models/Post.js` (Model.js task)
-- `routes/pages.js`
-- `routes/posts.js`
+## Features
+The REST API supports:
+- Creating new blog posts
+- Fetching all posts
+- Fetching a single post by ID
+- Updating an existing post
+- Deleting a post
+- Validating MongoDB ObjectIds
+- Returning proper HTTP status codes
+- Custom 404 and 500 error pages
+- Organized routing using Express Router
 
 ## server.js Task (`connectToDatabase`)
-In `server.js`, complete the `connectToDatabase` function so the app connects to MongoDB before starting the server.
+In `server.js`, the `connectToDatabase` function was completed so that the application establishes a MongoDB connection before starting the server. The server only begins listening on the defined port after a successful database connection, ensuring proper startup flow and preventing the app from running without database access.
+
 
 ## Model Task (`models/Post.js`)
 In the model task, students must complete the `postSchema` definition for MongoDB using Mongoose. Define the post fields (`title`, `content`, `author`) with suitable validation rules (for example: `String`, `required: true`, and `trim: true`). Keep `timestamps: true` enabled so each document gets `createdAt` and `updatedAt` automatically. When this model is complete, the API routes can use it for create/read/update/delete operations and validation errors will be returned correctly during `POST` and `PUT` requests.
 
+In this task, the `postSchema` in `models/Post.js` was completed so that MongoDB documents can be created, validated, and managed through Mongoose. The schema defines the required fields for a blog post:
 
+- `title` — String, required, trimmed  
+- `content` — String, required, trimmed  
+- `author` — String, required, trimmed  
 
-Implementation checklist:
-- Verify that `process.env.MONGODB_URI` exists. If missing, show a clear warning/error.
-- Call `mongoose.connect(process.env.MONGODB_URI, { dbName: 'blog' })`.
-- Log a success message when the connection is established.
-- Handle connection failures with `try/catch` and log the error message.
-- Keep server startup behind `connectToDatabase().then(...)` so routes run after the connection step.
-
-## Quick Start
-1. Install dependencies with `npm install`
-2. Create `.env` from `.env.example`
-3. Start the server with `npm run dev`
-4. Open `server.js`, `models/Post.js`, `routes/pages.js`, and `routes/posts.js`
-5. Complete the TODO comments in order
+The schema also keeps `timestamps: true` enabled so each document automatically receives `createdAt` and `updatedAt` fields. Once this model was implemented, all API routes (POST, GET, PUT, DELETE) were able to use it for database operations, and validation errors were correctly returned during `POST` and `PUT` requests.
 
 ## Browser Routes
 - `GET /`
@@ -92,44 +95,3 @@ If a browser route does not match any page route, the app should return your `40
    - Common errors:
       - HTTP `400` invalid id.
       - HTTP `404` post not found.
-
-Tip for testing: Start with `POST`, then copy the returned `_id` and use it in `GET /:id`, `PUT /:id`, and `DELETE /:id`.
-
-## Suggested Test Body
-Use Postman to test all API routes after implementing the TODOs.
-
-Recommended order in Postman:
-1. `POST /api/posts` (create)
-2. `GET /api/posts` (list)
-3. `GET /api/posts/:id` (single)
-4. `PUT /api/posts/:id` (update)
-5. `DELETE /api/posts/:id` (remove)
-
-Save the `_id` returned by `POST` and reuse it in `GET/PUT/DELETE` requests.
-
-### Create Post (`POST /api/posts`)
-```json
-{
-   "title": "My First Blog Post",
-   "content": "This API stores blog posts in MongoDB.",
-   "author": "Student"
-}
-```
-
-### Update Post (`PUT /api/posts/:id`)
-```json
-{
-   "title": "My First Blog Post (Updated)",
-   "content": "Updated content from Postman test.",
-   "author": "Student"
-}
-```
-
-### Invalid Body Example (expect `400`)
-```json
-{
-   "title": "",
-   "content": "",
-   "author": ""
-}
-```
